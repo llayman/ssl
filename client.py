@@ -1,4 +1,3 @@
-from pprint import pprint
 import argparse
 import socket
 import ssl
@@ -13,12 +12,11 @@ parser.add_argument('message')
 
 args = parser.parse_args()
 
-# context = ssl.create_default_context()
-context = ssl._create_unverified_context()
-# context = ssl.SSLContext()
-# context.verify_mode = ssl.CERT_OPTIONAL
-# context.check_hostname = False
-# context.load_default_certs()
+context = ssl.create_default_context()
+# Normally you would NOT do this, but we want to accept self-signed certificates without their public key in this case
+context.check_hostname = False
+context.verify_mode = ssl.CERT_NONE
+
 
 with socket.create_connection((args.host, args.port)) as sock:
     with context.wrap_socket(sock, server_hostname=args.host) as conn:
