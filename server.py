@@ -5,6 +5,8 @@ import ssl
 import os
 
 # change the following value to match your IP address
+# windows: ipconfig
+# mac/linux: ifconfig
 HOST = '152.20.244.151'
 PORT = 40043
 
