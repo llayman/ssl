@@ -5,7 +5,7 @@ import ssl
 import os
 
 # change the following value to match your IP address
-HOST = '152.20.196.150'
+HOST = '152.20.244.151'
 PORT = 40043
 
 CERTIFICATE = os.path.join('secrets', 'certificate.pem')
@@ -23,10 +23,13 @@ def main():
 
         with context.wrap_socket(sock, server_side=True) as ssock:
             while True:
-                # The following line BLOCKS execution while listening for a connection
-                conn, from_addr = ssock.accept()
-                print("SERVER received message from {}: {}".format(from_addr, conn.recv(1024)))
-                conn.write('Message acknowledged'.encode('utf-8'))
+                try:
+                    # The following line BLOCKS execution while listening for a connection
+                    conn, from_addr = ssock.accept()
+                    print("SERVER received message from {}: {}".format(from_addr, conn.recv(1024)))
+                    conn.write('Message acknowledged'.encode('utf-8'))
+                except ssl.SSLError as se:
+                    print('ERROR:', se)
 
 
 if __name__ == '__main__':
